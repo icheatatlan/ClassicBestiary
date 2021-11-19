@@ -27,7 +27,7 @@ local function on_tooltip_set_unit()
         local tip = DB.tip[spell_id]
         local range = ""
 
-        if (tip == nil) then
+        if tip ~= nil then
           local text_id, range = tip[1], tip[2]
           tip = DB.st[text_id]
 
@@ -45,7 +45,7 @@ local function on_tooltip_set_unit()
         end
 
         GameTooltip:AddLine(icon .. " " .. name .. " " .. range)
-        if (tip ~= nil) and IsControlKeyDown() then
+        if tip ~= nil and IsControlKeyDown() then
           GameTooltip:AddLine(tip, 0.8, 0.8, 0.8, true)
         end
       end

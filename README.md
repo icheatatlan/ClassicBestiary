@@ -8,3 +8,6 @@ Because of this, some ability tooltips may display incorrect values or might be 
 
 ![Collapsed view](assets/bestiary-collapse.png)
 ![Expanded view](assets/bestiary-expand.png)
+
+Inspired by https://wago.io/q1YbxB5Pz - tooltip effect code has been adapted from there.
+Repo: https://github.com/icheatatlan/ClassicBestiary
