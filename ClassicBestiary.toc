@@ -1,0 +1,7 @@
+## Interface: 11401
+## Title: Classic Bestiary
+## Notes: Displays known creature ability info in tooltips.
+## Version: 1.0
+
+db.lua
+ClassicBestiary.lua
