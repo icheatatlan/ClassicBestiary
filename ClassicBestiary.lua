@@ -7,6 +7,8 @@
 
 local DB = _G["ClassicBestiary"]
 
+local hook_installed = false
+
 local function on_tooltip_set_unit()
   local name, id = GameTooltip:GetUnit()
   local guid_frag = (UnitGUID(id)):reverse():sub(12)
@@ -63,7 +65,10 @@ end
 
 local function on_event(_frame, e, ...)
   if e == "PLAYER_ENTERING_WORLD" then
-    GameTooltip:HookScript("OnTooltipSetUnit", on_tooltip_set_unit)
+    if not hook_installed then
+        GameTooltip:HookScript("OnTooltipSetUnit", on_tooltip_set_unit)
+        hook_installed = true
+    end
   elseif e == "MODIFIER_STATE_CHANGED" then
     if UnitExists("mouseover") then
       GameTooltip:SetUnit("mouseover");
