@@ -31,7 +31,13 @@ local function on_tooltip_set_unit()
 
         if tip ~= nil then
           local text_id, range = tip[1], tip[2]
-          tip = DB.st[text_id]
+
+          -- text 0 is always ""
+          if text_id == 0 then
+            tip = GetSpellDescription(spell_id)
+          else
+            tip = DB.st[text_id]
+          end
 
           if (range == 0) then
             range = "Melee range"
