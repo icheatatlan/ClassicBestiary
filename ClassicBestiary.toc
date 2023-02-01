@@ -1,4 +1,4 @@
-## Interface: 11401
+## Interface: 11403
 ## Title: Classic Bestiary
 ## Notes: Displays known creature ability info in tooltips.
 ## Version: 1.0.3
