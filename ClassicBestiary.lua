@@ -10,10 +10,26 @@ local DB = _G["ClassicBestiary"]
 local hook_installed = false
 
 local function on_tooltip_set_unit()
-  local name, id = GameTooltip:GetUnit()
-  local guid_frag = (UnitGUID(id)):reverse():sub(12)
-  local hep_pos = guid_frag:find("-")
-  local npc_id = tonumber(guid_frag:sub(1, hep_pos - 1):reverse())
+  local _tt_name, tt_unit = GameTooltip:GetUnit()
+  if not tt_unit then
+    tt_unit = "mouseover" -- XXX: probably not necessary
+  end
+
+  local guid = UnitGUID(tt_unit)
+  if not guid then
+    return
+  end
+
+  guid = {strsplit("-", guid)}
+  if guid[1] ~= "Creature" then
+    return
+  end
+
+  local npc_id = tonumber(guid[6])
+  if not npc_id then
+    return
+  end
+
   local abilities = DB.map[npc_id]
 
   if abilities ~= nil then
@@ -27,10 +43,9 @@ local function on_tooltip_set_unit()
         end
 
         local tip = DB.tip[spell_id]
-        local range = ""
 
         if tip ~= nil then
-          local text_id, range = tip[1], tip[2]
+          local text_id = tip[1]
 
           -- text 0 is always ""
           if text_id == 0 then
@@ -38,21 +53,11 @@ local function on_tooltip_set_unit()
           else
             tip = DB.st[text_id]
           end
-
-          if (range == 0) then
-            range = "Melee range"
-          elseif (range == -1) then
-            range = ""
-          elseif (range == -2) then
-            range = "Unlimited range"
-          else
-            range = tostring(range) .. " yd range"
-          end
         else
           tip = GetSpellDescription(spell_id)
         end
 
-        GameTooltip:AddLine(icon .. " " .. name .. " " .. range)
+        GameTooltip:AddLine(icon .. " " .. name)
         if tip ~= nil and IsControlKeyDown() then
           GameTooltip:AddLine(tip, 0.8, 0.8, 0.8, true)
         end
@@ -72,8 +77,8 @@ end
 local function on_event(_frame, e, ...)
   if e == "PLAYER_ENTERING_WORLD" then
     if not hook_installed then
-        GameTooltip:HookScript("OnTooltipSetUnit", on_tooltip_set_unit)
-        hook_installed = true
+      GameTooltip:HookScript("OnTooltipSetUnit", on_tooltip_set_unit)
+      hook_installed = true
     end
   elseif e == "MODIFIER_STATE_CHANGED" then
     if UnitExists("mouseover") then
